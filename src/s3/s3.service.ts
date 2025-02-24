@@ -26,7 +26,7 @@ export class S3Service {
     })
   }
 
-  async uploadFile(file: Express.Multer.File, key: string){
+  async uploadFile(file: Express.Multer.File, key: string) {
     const bucket = this.configService.get<string>('S3_BUCKET');
     const input: PutObjectCommandInput = {
       Body: file.buffer,
@@ -42,7 +42,7 @@ export class S3Service {
         return `https://${bucket}.s3.${this.region}.amazonaws.com/${key}`
       }
       throw new Error('Image not saved to s3');
-    }catch(err){
+    } catch(err) {
       this.logger.error('Cannot save file inside s3', err);
       throw err
     }

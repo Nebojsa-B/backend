@@ -25,7 +25,7 @@ export class AuthService {
     @Inject(jwtConfig.KEY) private readonly jwtConfiguration: ConfigType<typeof jwtConfig>
   ){}
 
-  async signUp(signUpDto: SignUpDto){
+  async signUp(signUpDto: SignUpDto) {
     try {
       const { firstName, lastName, email, password, countryId } = signUpDto;
 
