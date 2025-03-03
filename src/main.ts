@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ValidationPipe } from '@nestjs/common';
+import { BadRequestException, ValidationError, ValidationPipe } from '@nestjs/common';
 import * as fs from 'fs';
 import * as cookieParser from 'cookie-parser';
 
@@ -15,6 +15,23 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     httpsOptions
   });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors: ValidationError[]) => {
+        const allErrors = errors.flatMap((err) => Object.values(err.constraints || {}));
+
+        // If only one error exists, return it as a string, otherwise return an array
+        const formattedErrors = allErrors.length === 1 ? allErrors[0] : allErrors;
+
+        return new BadRequestException({
+          statusCode: 400,
+          error: "Bad Request",
+          message: formattedErrors, // Flattened format
+        });
+      },
+    })
+  );
 
   const config = new DocumentBuilder()
     .setVersion('1.0')

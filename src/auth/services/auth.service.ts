@@ -49,7 +49,8 @@ export class AuthService {
     } catch (error) {
       const pgUniqueViolationErrorCode = '23505';
       if(error.code === pgUniqueViolationErrorCode){
-        throw new ConflictException()
+        console.log('Email already exist');
+        throw new ConflictException('Email already exist.')
       }
       throw error;
     }

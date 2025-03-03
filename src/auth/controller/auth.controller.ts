@@ -15,8 +15,8 @@ export class AuthController {
   @Post('sign-up')
   async signUp(
     @Body() signUpDto: SignUpDto,
-    @Res({passthrough: true}) response){
-    const {accessToken, refreshToken, user} = await this.authService.signUp(signUpDto);
+    @Res({passthrough: true}) response) {
+    const { accessToken, refreshToken, user } = await this.authService.signUp(signUpDto);
 
     response.cookie('accessToken', accessToken, {
       httpOnly: true,
