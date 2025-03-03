@@ -65,13 +65,9 @@ export class CountryService {
   async getCountryGeoJson(name: string) {
     const geoJson = await this.httpService.axiosRef.get('https://nominatim.openstreetmap.org/search.php?q=kosovo&polygon_geojson=1&format=jsonv2');
 
-    console.log(JSON.stringify(geoJson.data[0].geojson));
-
     const country = await this.countryRepo.findOneBy({name: 'Rejected'});
     if(!country)
       throw new NotFoundException('Country not found');
-
-    console.log(country);
 
     country.geoJson = JSON.stringify(geoJson.data[0].geojson);
     this.countryRepo.save(country);

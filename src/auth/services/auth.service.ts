@@ -48,8 +48,7 @@ export class AuthService {
       return await this.generateTokens(user);
     } catch (error) {
       const pgUniqueViolationErrorCode = '23505';
-      if(error.code === pgUniqueViolationErrorCode){
-        console.log('Email already exist');
+      if(error.code === pgUniqueViolationErrorCode) {
         throw new ConflictException('Email already exist.')
       }
       throw error;
